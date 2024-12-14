@@ -1,6 +1,6 @@
 from fastapi import WebSocket, WebSocketDisconnect, Depends
 from pydantic import ValidationError
-from app.schemas import LTEDataModel
+from app.schemas import LTEDataList
 from app.crud import save_lte_data
 from app.database import get_db
 from sqlalchemy.orm import Session
@@ -25,9 +25,9 @@ async def websocket_endpoint(websocket: WebSocket, db: Session = Depends(get_db)
             data = await websocket.receive_text()
             logging.info(f"Получено сообщение: {data}")
             try:
-                lte_data = LTEDataModel.parse_raw(data)
-                save_lte_data(db, lte_data)
-                await websocket.send_text("Данные успешно получены и сохранены на сервере.")
+                lte_data_list = LTEDataList.parse_raw(data)
+                save_lte_data(db, lte_data_list.jsonLteCellInfo)
+                await websocket.send_text(f"Успешно сохранено {len(lte_data_list.jsonLteCellInfo)} записей в базе данных.")
             except ValidationError as e:
                 logging.error(f"Ошибка валидации: {e}")
                 await websocket.send_text(f"Ошибка валидации: {e}")

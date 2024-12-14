@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from typing import List
 
 class LTEDataModel(BaseModel):
     rsrpLte: int = Field(..., description="RSRP LTE")
@@ -11,3 +12,6 @@ class LTEDataModel(BaseModel):
     time: str = Field(..., description="Дата и время")
     latitude: float = Field(..., description="Широта")
     longitude: float = Field(..., description="Долгота")
+
+class LTEDataList(BaseModel):
+    jsonLteCellInfo: List[LTEDataModel]
