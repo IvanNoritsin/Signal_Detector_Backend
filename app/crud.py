@@ -1,6 +1,11 @@
 from sqlalchemy.orm import Session
 from app.models import LTEData
 from app.schemas import LTEDataModel
+from datetime import datetime
+
+def convert_to_unix_timestamp(time_str: str) -> int:
+    dt = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+    return int(dt.timestamp())
 
 def save_lte_data(db: Session, lte_data_list: list[LTEDataModel]):
     db_records = [
@@ -12,7 +17,7 @@ def save_lte_data(db: Session, lte_data_list: list[LTEDataModel]):
             operatorLte=lte_data.operatorLte,
             mncLte=lte_data.mncLte,
             mccLte=lte_data.mccLte,
-            time=lte_data.time,
+            time=convert_to_unix_timestamp(lte_data.time),
             latitude=lte_data.latitude,
             longitude=lte_data.longitude
         ) 

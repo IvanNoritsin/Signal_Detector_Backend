@@ -12,6 +12,6 @@ class LTEData(Base):
     operatorLte = Column(String, nullable=True)
     mncLte = Column(String, nullable=True)
     mccLte = Column(String, nullable=True)
-    time = Column(String, nullable=False)
+    time = Column(Integer, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
